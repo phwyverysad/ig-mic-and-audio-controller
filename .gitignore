@@ -1,0 +1,15 @@
+# Build artifacts
+*.obj
+*.tmp.exe
+*.old.exe
+test_cpp_core.exe
+e2e_server_runner.exe
+test_hotkeys.ini
+
+# IDE and OS files
+.vscode/
+.vs/
+*.suo
+*.user
+Thumbs.db
+Desktop.ini

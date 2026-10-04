@@ -1,0 +1,9 @@
+{
+  "name": "com.instagram.hotkey.controller",
+  "description": "Instagram Hotkey Controller Host",
+  "path": "C:\\Users\\woran\\Documents\\My_Project\\webstorebrowser\\Instagram Mic & Audio Controller\\cpp_hotkey\\IG Audio Controller.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://ljnimllanldnbhcibpeggokmgpmphdoh/"
+  ]
+}

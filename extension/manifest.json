@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Instagram Real-time Mic & Audio Controller",
+  "version": "1.4.0",
+  "description": "ควบคุมเปิด-ปิดไมโครโฟนและหูฟังบน Instagram แบบเรียลไทม์ พร้อมเชื่อมต่อปุ่มลัด C++",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqkDDNMPrjqRt5UhKWCoDjwz4hBE4Mfh+UqVy24naWxMIh+fu/olC2dqIS8Ywc3QqiB3vtj8djWiEcvVDcisiumLybyiLlo06Hmj78VwTSQ3W7EetywdYVdqFPI8CzxKgskBT9PFS+yWF0a395+y0fcaiJl/xGPdD4aOwOoUs8tM2ev7MdnbPsqe1pB+x8nQXRcXPH14riT4DLfm97RLo/hIKoXrdWX5ZtbCEGr1/9EuDErII4yeEESZMcJNi/P574+NrL/9Xk2GFck0fwLvqN2zHAtlsBQ3KKMot58e2U1mJf/wn52pmNxRi1bS9kh+ibOyxxOQUnln1wHBFTfgQkwIDAQAB",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "nativeMessaging",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.instagram.com/*",
+    "*://instagram.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "all_frames": true,
+      "js": [
+        "bridge.js"
+      ],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    },
+    {
+      "matches": [
+        "https://*.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "all_frames": true,
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ]
+}
