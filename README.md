@@ -1,84 +1,97 @@
-# Instagram Mic & Audio Controller
+# IG Audio Controller (Instagram Mic & Audio Controller)
 
-ระบบควบคุมการเปิด-ปิดไมโครโฟนและหูฟัง (Incoming Audio) บน Instagram แบบเรียลไทม์ พร้อมโปรแกรม Native C++ สำหรับดักจับปุ่มลัดระดับระบบปฏิบัติการ (Global / Window Hotkeys)
-
----
-
-## 1. จุดเด่นและฟังก์ชันที่อัปเกรดล่าสุด
-
-1. **กดค้างเพื่อพูด (Push-to-Talk) ใช้งานได้จริง 100%**:
-   - เมื่อเลือกโหมด Push-to-Talk ไมค์จะปิดเสียง (Mute) เป็นค่าเริ่มต้น
-   - ขณะกดปุ่มหรือคลิกเมาส์ค้างไว้ ไมค์จะเปิด (Unmute) ให้พูดทันที
-   - เมื่อปล่อยปุ่ม ไมค์จะกลับไปปิดเสียง (Mute) อัตโนมัติ โดยไม่มีอาการติดขัดหรือสะดุดจากการกดปุ่มซ้ำของ OS
-2. **ซิงค์สถานะไอคอนแบบเรียลไทม์ (Bidirectional Sync)**:
-   - เมื่อกดปุ่มลัด ไอคอนบนหน้าเว็บ Instagram จะเปลี่ยนสีทันที (ขาว = เปิด, แดง = ปิด)
-   - หากผู้ใช้คลิกปุ่มบนหน้าจอด้วยเมาส์ สถานะจะถูกส่งกลับมาอัปเดตที่โปรแกรม C++ และกระจายไปยังแท็บ Instagram อื่นๆ แบบเรียลไทม์
-   - รองรับการซิงค์ปุ่มในแถบโทรของ Instagram (Instagram in-call native toolbar)
-   - เมื่อเปิดแท็บ Instagram ขึ้นมาใหม่ จะดึงสถานะปัจจุบันจาก C++ มาแสดงทันที
-3. **ตั้งปุ่มได้ทุกปุ่ม (แป้นพิมพ์, เมาส์, และปุ่มควบคู่)**:
-   - **ปุ่มเมาส์**: รองรับ Mouse 4 (XButton 1), Mouse 5 (XButton 2), Mouse Middle (ลูกกลิ้ง), Mouse Left, Mouse Right
-   - **ปุ่มควบคู่ (Key Combinations)**: รองรับการกดปุ่มร่วม เช่น `Ctrl + Shift + M`, `Alt + F8`, `Shift + Mouse 4`, `Ctrl + Mouse 5`
-   - **ปุ่มคีย์บอร์ดพิเศษ**: แป้นตัวเลข Numpad 0-9, ปุ่มฟังก์ชัน F1-F24, Media Keys (Play/Pause, Mute, Next, Prev)
-4. **ห้ามมีอิโมจิเด็ดขาด (Strict No-Emoji)**:
-   - ทั้งใน GUI, ถาดระบบ (Tray), Tooltips, และหน้าเว็บ ไม่มีอิโมจิใดๆ สะอาดตาและเป็นทางการ
-5. **ป้องกันการเปิดโปรแกรมซ้ำ (Single Instance Guard)**:
-   - ดับเบิ้ลคลิกซ้ำจะสลับกลับมาที่หน้าต่างเดิมทันที ไม่เปิดโปรแกรมซ้ำซ้อน
-6. **เปิดโปรแกรมอัตโนมัติเมื่อเข้าหน้าเว็บ Instagram (Auto-Start via Native Messaging)**:
-   - เมื่อเปิดหรือสลับมาที่หน้าเว็บ Instagram เบราว์เซอร์จะสั่งเปิดโปรแกรม C++ Controller ให้อัตโนมัติทันที
-   - โปรแกรมจะเริ่มทำงานในพื้นหลัง (System Tray) อย่างเงียบๆ โดยไม่เด้งหน้าต่างขึ้นมาบังหน้าจอ
-   - มีระบบ Single Instance Guard ป้องกันการเปิดโปรแกรมซ้ำซ้อน 100%
-   - สามารถเลือกเปิดหรือปิดระบบนี้ได้จากหน้าต่างตั้งค่าผ่านตัวเลือก "เปิดโปรแกรมอัตโนมัติเมื่อเข้าหน้าเว็บ Instagram"
+Real-time microphone and incoming audio controller for Instagram WebRTC voice and video calls, powered by a native C++ Windows desktop application for global system hotkeys.
 
 ---
 
-## 2. วิธีติดตั้งส่วนขยายในเบราว์เซอร์ (Chrome / Edge / Brave)
+## 1. Key Features and Enhancements
 
-1. เปิดเบราว์เซอร์แล้วเข้าไปที่:
+1. **Push-to-Talk (PTT) Fully Functional**:
+   - In Push-to-Talk mode, the microphone is muted by default.
+   - Holding down the configured hotkey or mouse button unmutes the microphone immediately.
+   - Releasing the key automatically mutes the microphone again without key-repeat stutter or interference from OS key-repeat events.
+   - WebRTC audio tracks are controlled directly via track descriptor proxies without disconnecting or toggling the Instagram native in-call toolbar button.
+
+2. **Bidirectional Real-Time State Synchronization**:
+   - Pressing a hotkey instantly toggles the Instagram in-page floating status icon (White = Active, Red = Muted).
+   - Clicking the in-page button with a mouse reflects back to the C++ controller and broadcasts to all open Instagram tabs in real time.
+   - Seamlessly preserves state during Single Page Application (SPA) route changes without page reloads.
+   - Newly opened tabs automatically synchronize state from the C++ controller upon connection.
+
+3. **Universal Hotkey Support (Keyboard, Mouse, and Key Combinations)**:
+   - **Mouse Buttons**: Supports Mouse 4 (XButton 1), Mouse 5 (XButton 2), Middle Mouse Button (Wheel), Left Click, and Right Click.
+   - **Key Combinations**: Supports modifier combinations such as `Ctrl + Shift + M`, `Alt + F8`, `Shift + Mouse 4`, `Ctrl + Mouse 5`.
+   - **Special Keys**: Numpad 0-9, Function keys F1-F24, Media Keys (Play/Pause, Mute, Next, Previous).
+
+4. **Strict No-Emoji Architecture**:
+   - Clean, formal interface without any emoji characters across GUI, System Tray, Tooltips, and In-Page overlays.
+
+5. **Single Instance Guard**:
+   - Uses a named Windows Mutex to prevent duplicate processes. Launching the executable again automatically restores and focuses the existing window.
+
+6. **Auto-Start via Native Messaging**:
+   - When navigating to Instagram in the browser, the extension automatically launches the C++ controller in the background.
+   - Automatically minimizes to the Windows System Tray without stealing focus or interrupting other tasks.
+   - Can be toggled on or off via the configuration GUI.
+
+7. **Automatic Extension Installer**:
+   - On startup, `IG Audio Controller.exe` automatically verifies whether the browser extension is installed.
+   - If missing, it automatically clones or downloads the extension files from GitHub and launches Chrome to load it.
+   - Includes a dedicated "Check / Install Chrome Extension" button in the GUI for one-click reinstallation.
+
+---
+
+## 2. Browser Extension Installation (Chrome / Edge / Brave)
+
+1. Open your Chromium-based browser and navigate to:
    - Google Chrome: `chrome://extensions`
    - Microsoft Edge: `edge://extensions`
    - Brave: `brave://extensions`
-2. เปิดสวิตช์ **"Developer mode"** (โหมดนักพัฒนา) ที่มุมขวาบน
-3. คลิกปุ่ม **"Load unpacked"** (โหลดส่วนขยายที่คลายการบีบอัดแล้ว)
-4. เลือกโฟลเดอร์:
-   `d:\Users\woran\Documents\My_Project\webstorebrowser\Instagram Mic & Audio Controller\extension`
-5. ส่วนขยายจะพร้อมทำงานบนหน้าเว็บ `https://www.instagram.com` ทันที
+2. Enable **Developer mode** in the top right corner.
+3. Click **Load unpacked**.
+4. Select the `extension` directory inside this project:
+   `c:\Users\woran\Documents\My_Project\webstorebrowser\Instagram Mic & Audio Controller\extension`
+5. The extension will activate and run automatically on `https://www.instagram.com`.
 
 ---
 
-## 3. วิธีใช้งานโปรแกรม C++ Hotkey Controller
+## 3. Using the C++ Controller (`IG Audio Controller.exe`)
 
-1. ไปที่โฟลเดอร์ `cpp_hotkey/` และดับเบิ้ลคลิกไฟล์ `IG Audio Controller.exe`
-   - หากยังไม่ได้ติดตั้ง Extension ตัวโปรแกรมจะตรวจพบและดาวน์โหลด Extension จาก GitHub มาติดตั้งให้อัตโนมัติทันที
-   - สามารถคลิกปุ่ม `[ ตรวจสอบ / ติดตั้ง Chrome Extension ]` ในหน้าต่างโปรแกรมเพื่อติดตั้งซ้ำได้ตลอดเวลา
-2. หน้าต่างการตั้งค่าจะปรากฏขึ้นมา:
-   - **ปุ่มลัดไมค์**: คลิกที่ปุ่ม `[ คลิกเพื่อเปลี่ยน ]` แล้วกดปุ่มบนคีย์บอร์ด, คลิกปุ่มเมาส์ (เช่น Mouse 4) หรือกดปุ่มร่วม (เช่น `Ctrl + Shift + M`)
-   - **โหมดไมค์**:
-     - `สลับเปิด/ปิด (Toggle)`: กดหนึ่งครั้งเปิด กดอีกครั้งปิด
-     - `กดค้างเพื่อพูด (Push-to-Talk)`: ไมค์จะปิดอยู่ตลอด และจะเปิดให้พูดเฉพาะตอนกดปุ่มค้างไว้
-   - **ปุ่มลัดหูฟัง**: คลิกที่ปุ่ม `[ คลิกเพื่อเปลี่ยน ]` แล้วกดปุ่มที่ต้องการ
-   - **โหมดหูฟัง**:
-     - `สลับเปิด/ปิดเสียง (Toggle)`: กดหนึ่งครั้งปิดเสียง กดอีกครั้งเปิดเสียง
-     - `กดค้างปิดเสียง (Push-to-Mute)`: กดค้างเพื่อ Mute เสียงชั่วคราว ปล่อยเพื่อได้ยินเสียงตามปกติ
-   - **ขอบเขตการทำงาน**:
-     - `ทำงานทุกหน้าต่างทั่วทั้งระบบ (Global)`: กดปุ่มจากหน้าต่างหรือเกมใดก็ได้ ระบบจะทำงานทันที
-     - `ทำงานเฉพาะหน้าต่างเบราว์เซอร์และ Instagram`: ปุ่มจะทำงานเฉพาะตอนที่หน้าต่างที่ใช้งานอยู่คือเบราว์เซอร์หรือ Instagram
-   - **เปิดเสียงแจ้งเตือน (Beep Sound)**: ติ๊กเลือกเพื่อเปิดหรือปิดเสียงบี๊บขณะสลับสถานะ
-   - **เปิดโปรแกรมอัตโนมัติเมื่อเข้าหน้าเว็บ Instagram**: ติ๊กเลือกเพื่อให้เบราว์เซอร์เปิดโปรแกรมให้เองเมื่อเข้าใช้งาน Instagram (หากไม่ต้องการให้เปิดอัตโนมัติ สามารถติ๊กออกได้)
-3. คลิกปุ่ม **"บันทึกและทำงานในพื้นหลัง (ซ่อนหน้าต่าง)"**
-   - หน้าต่างจะซ่อนตัวลงไปที่ถาดระบบ (System Tray) มุมขวาล่างของ Taskbar
-   - ดับเบิ้ลคลิกไอคอนที่ System Tray เพื่อเปิดหน้าต่างกลับมาตั้งค่าใหม่
-   - คลิกขวาที่ไอคอนแล้วเลือก "ออกจากโปรแกรม" หรือกดปุ่มลัด `Ctrl + Alt + Q` เพื่อปิดโปรแกรม
+1. Navigate to the `cpp_hotkey/` folder and launch `IG Audio Controller.exe`.
+   - If the extension is not yet installed, the controller will detect this and automatically download the extension from GitHub.
+   - You can also click the **Check / Install Chrome Extension** button at any time.
+2. Configuration Options:
+   - **Mic Hotkey**: Click `[ Click to record ]` and press any key, mouse button (e.g. Mouse 4), or combo (`Ctrl + Shift + M`).
+   - **Mic Mode**:
+     - `Toggle`: Press once to unmute, press again to mute.
+     - `Push-to-Talk`: Muted by default; unmutes while holding the button.
+   - **Audio Hotkey**: Click `[ Click to record ]` and press the desired key or mouse button.
+   - **Audio Mode**:
+     - `Toggle`: Press once to mute incoming sound, press again to unmute.
+     - `Push-to-Mute`: Hold to temporarily mute incoming audio; release to restore sound.
+   - **Execution Scope**:
+     - `Global (All Windows)`: Hotkeys trigger from any window, desktop, or full-screen game.
+     - `Browser & Instagram Only`: Hotkeys trigger only when the active window is a web browser.
+   - **Beep Sound**: Play notification beeps on state transitions.
+   - **Auto-Start with Instagram**: Automatically start controller when opening Instagram.
+3. Click **Save and Run in Background (Hide Window)**:
+   - The application minimizes to the Windows System Tray in the bottom-right taskbar.
+   - Double-click the tray icon to restore the configuration window.
+   - Right-click the tray icon and select Exit, or press `Ctrl + Alt + Q` for emergency shutdown.
 
 ---
 
-## 4. การรันการทดสอบอัตโนมัติ (Automated Tests)
+## 4. Automated Testing Suite
 
-เปิด Command Prompt หรือ PowerShell ในโฟลเดอร์ `tests/` แล้วรันคำสั่ง:
+To run all automated verification tests, open Command Prompt or PowerShell in the `tests/` directory:
 ```cmd
 run_all_tests.bat
 ```
-ชุดการทดสอบจะครอบคลุม:
-1. การตรวจสอบว่าไม่มีอิโมจิในโค้ดทุกไฟล์ 100%
-2. การตรวจสอบโครงสร้างและ Syntax ของ Chrome Extension
-3. Unit Test ของ C++ สำหรับการบันทึก/โหลดปุ่มควบคู่ (Combos), ปุ่มเมาส์ (Mouse 4/5), และการ Unmask ข้อมูล WebSocket
-4. การทดสอบจำลองเชื่อมต่อ End-to-End WebSocket ส่งคำสั่ง Push-to-Talk, Initial Sync และ State Change แบบสองทาง
+The test suite covers:
+1. **No-Emoji Verification**: Validates 100% compliance with strict no-emoji requirements across all project files.
+2. **Chrome Extension Verification**: Validates Manifest V3 structure, Service Worker, and dual content script execution.
+3. **C++ Core Unit Tests**: Tests config persistence, key combinations, mouse mapping, and WebSocket RFC-6455 framing.
+4. **End-to-End WebSocket Integration**: Verifies live client-server bidirectional state synchronization.
+5. **Push-to-Talk and Mic Logic**: Tests WebRTC descriptor proxies and audio isolation.
+6. **Real-time SPA Verification**: Verifies zero-refresh DOM injection and persistent communication channels.
+7. **Extension Auto-Installer Verification**: Validates repository clone endpoints and fallback extraction logic.
